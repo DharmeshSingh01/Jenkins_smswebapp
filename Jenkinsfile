@@ -26,9 +26,11 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-                script {
-                    // Build the initial local image
-                    bat "docker build -t mysmswebapp:latest ."
+                // Tell Jenkins to switch to the smswebapp directory
+                dir('smswebapp') {
+                    script {
+                        bat "docker build -t mysmswebapp:latest ."
+                    }
                 }
             }
         }
@@ -39,14 +41,13 @@ pipeline {
                     // Securely inject the DockerHub credentials into the environment
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         
-                        // 1. Log into DockerHub. 
-                        // We use echo and --password-stdin so your password is never written to the Jenkins build logs.
+                        
                         bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
                         
-                        // 2. Tag the image with your DockerHub username so Docker knows where to push it
+                       
                         bat 'docker tag myapp:latest %DOCKER_USER%/myapp:latest'
                         
-                        // 3. Push the image to your DockerHub repository
+                       
                         bat 'docker push %DOCKER_USER%/myapp:latest'
                     }
                 }
