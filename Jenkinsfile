@@ -29,7 +29,8 @@ pipeline {
                 // Tell Jenkins to switch to the smswebapp directory
                 dir('smswebapp') {
                     script {
-                        bat "docker build -t mysmswebapp:latest ."
+                        // bat "docker build -t mysmswebapp:latest ."
+                        bat "docker build -f smswebapp/Dockerfile -t mysmswebapp:latest ."
                     }
                 }
             }
