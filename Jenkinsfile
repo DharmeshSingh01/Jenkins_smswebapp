@@ -26,13 +26,14 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
+                bat "docker build -f smswebapp/Dockerfile -t mysmswebapp:latest ."
                 // Tell Jenkins to switch to the smswebapp directory
-                dir('smswebapp') {
-                    script {
-                        // bat "docker build -t mysmswebapp:latest ."
-                        bat "docker build -f smswebapp/Dockerfile -t mysmswebapp:latest ."
-                    }
-                }
+                // dir('smswebapp') {
+                //     script {
+                //         // bat "docker build -t mysmswebapp:latest ."                       
+                //         bat "docker build -f smswebapp/Dockerfile -t mysmswebapp:latest ."
+                //     }
+                // }
             }
         }
 
