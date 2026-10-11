@@ -40,17 +40,11 @@ pipeline {
         stage('Docker Push to DockerHub') {
             steps {
                 script {
-                    // Securely inject the DockerHub credentials into the environment
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        
-                        
-                        bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
-                        
-                       
-                        bat 'docker tag myapp:latest %DOCKER_USER%/myapp:latest'
-                        
-                       
-                        bat 'docker push %DOCKER_USER%/myapp:latest'
+                        // NO spaces before the pipe symbol
+                        bat 'echo %DOCKER_PASS%| docker login -u %DOCKER_USER% --password-stdin'
+                        bat 'docker tag mysmswebapp:latest %DOCKER_USER%/mysmswebapp:latest'
+                        bat 'docker push %DOCKER_USER%/mysmswebapp:latest'
                     }
                 }
             }
